@@ -23,6 +23,9 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     @IBOutlet var nameLabel: WKInterfaceLabel!
     // Label for other messages (HP:100, Hunger:0)
     @IBOutlet var outputLabel: WKInterfaceLabel!
+    var pikachuImg : UIImage = UIImage(named: "pikachu")!
+    var caterpieImg : UIImage = UIImage(named: "caterpie")!
+       
     
     
     
@@ -38,7 +41,15 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
         print("WATCH: Got message from Phone")
         // Message from phone comes in this format: ["course":"MADT"]
-        let messageBody = message["course"] as! String
+//        let messageBody = message["course"] as! String
+//        messageLabel.setText(messageBody)
+        let messageBody = message["choice"] as! String
+        if(messageBody == "pokemon"){
+            pokemonImageView.setImage(pikachuImg)
+        }
+        else if(messageBody == "caterpie"){
+            pokemonImageView.setImage(caterpieImg)
+        }
         messageLabel.setText(messageBody)
     }
     
