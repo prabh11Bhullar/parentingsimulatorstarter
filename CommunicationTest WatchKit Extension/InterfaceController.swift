@@ -50,7 +50,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         else if(messageBody == "caterpie"){
             pokemonImageView.setImage(caterpieImg)
         }
-        messageLabel.setText(messageBody)
+     //
     }
     
 
@@ -67,6 +67,14 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
             WCSession.default.delegate = self
             WCSession.default.activate()
         }
+        if let yourName: String = context as? String {
+                    self.nameLabel.setText(yourName)
+                    self.messageLabel.setText("Hi, i am \(yourName)")
+               } else {
+                   self.nameLabel.setText("")
+                    self.messageLabel.setText("")
+                }
+        
         
         
     }

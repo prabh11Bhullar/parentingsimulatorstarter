@@ -20,6 +20,9 @@ class Screen2Sample: WKInterfaceController, WCSessionDelegate {
     
     // 2. Outlet for the label
     @IBOutlet var nameLabel: WKInterfaceLabel!
+    var pikachuImage : UIImage = UIImage(named: "pikachu")!
+        var caterpieImage : UIImage = UIImage(named: "caterpie")!
+       var name : String = ""
     
     // MARK: Delegate functions
     // ---------------------
@@ -41,8 +44,7 @@ class Screen2Sample: WKInterfaceController, WCSessionDelegate {
             WCSession.default.activate()
         }
         
-        
-    }
+  }
     
     override func willActivate() {
         // This method is called when watch view controller is about to be visible to user
@@ -50,6 +52,20 @@ class Screen2Sample: WKInterfaceController, WCSessionDelegate {
         
         
     }
+    
+    func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
+            print("WATCH: Got message from Phone")
+          
+            let messageBody = message["choice"] as! String
+        
+            if(messageBody == "pokemon"){
+                pokemonImageView.setImage(pikachuImage)
+            }
+            else if(messageBody == "caterpie"){
+                pokemonImageView.setImage(caterpieImage)
+            }
+        }
+         
     
     override func didDeactivate() {
         // This method is called when watch view controller is no longer visible
@@ -62,10 +78,28 @@ class Screen2Sample: WKInterfaceController, WCSessionDelegate {
         print("Start button pressed")
     }
     
-    
-    @IBAction func selectNameButtonPressed() {
+    @IBAction func selecturNameBtn() {
         print("select name button pressed")
+        let Responses = ["Albert", "mohamad", "janelle"]
+            presentTextInputController(withSuggestions:Responses, allowedInputMode: .plain) {
+        
+                    (results) in
+                      if (results != nil && results!.count > 0)
+                      
+                      {
+                       let userResponse = results?.first as? String
+                       self.nameLabel.setText(userResponse)
+                        self.name = userResponse!
+                    }
+                }
+            }
+            override func contextForSegue(withIdentifier segueIdentifier: String) -> Any? {
+                return self.name
+        
+             }
     }
     
+    
+    
 
-}
+
