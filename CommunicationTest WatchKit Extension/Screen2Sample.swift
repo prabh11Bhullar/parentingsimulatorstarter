@@ -20,8 +20,8 @@ class Screen2Sample: WKInterfaceController, WCSessionDelegate {
     
     // 2. Outlet for the label
     @IBOutlet var nameLabel: WKInterfaceLabel!
-    var pikachuImage : UIImage = UIImage(named: "pikachu")!
-        var caterpieImage : UIImage = UIImage(named: "caterpie")!
+    var pikachuImg : UIImage = UIImage(named: "pikachu")!
+        var caterpieImg : UIImage = UIImage(named: "caterpie")!
        var name : String = ""
     
     // MARK: Delegate functions
@@ -57,12 +57,11 @@ class Screen2Sample: WKInterfaceController, WCSessionDelegate {
             print("WATCH: Got message from Phone")
           
             let messageBody = message["choice"] as! String
-        
             if(messageBody == "pokemon"){
-                pokemonImageView.setImage(pikachuImage)
+                pokemonImageView.setImage(pikachuImg)
             }
             else if(messageBody == "caterpie"){
-                pokemonImageView.setImage(caterpieImage)
+                pokemonImageView.setImage(caterpieImg)
             }
         }
          
@@ -77,6 +76,8 @@ class Screen2Sample: WKInterfaceController, WCSessionDelegate {
     @IBAction func startButtonPressed() {
         print("Start button pressed")
     }
+    
+    
     
     @IBAction func selecturNameBtn() {
         print("select name button pressed")

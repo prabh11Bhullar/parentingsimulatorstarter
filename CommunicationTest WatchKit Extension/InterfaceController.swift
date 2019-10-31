@@ -17,6 +17,9 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     // ---------------------
     @IBOutlet var messageLabel: WKInterfaceLabel!
    
+    @IBAction func Feedup() {
+    }
+    @IBOutlet var feedup: WKInterfaceButton!
     // Imageview for the pokemon
     @IBOutlet var pokemonImageView: WKInterfaceImage!
     // Label for Pokemon name (Albert is hungry)
@@ -25,6 +28,9 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     @IBOutlet var outputLabel: WKInterfaceLabel!
     var pikachuImg : UIImage = UIImage(named: "pikachu")!
     var caterpieImg : UIImage = UIImage(named: "caterpie")!
+    var gameStatus=true
+    var levelOfHunger=0
+    var levelOfHealth=0
        
     
     
@@ -50,6 +56,15 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         else if(messageBody == "caterpie"){
             pokemonImageView.setImage(caterpieImg)
         }
+        else if(messageBody=="wakeup")
+        {
+            lblCount();
+        feedup.setEnabled(true)
+                gameStatus = true
+            
+            }
+            gameStatus = true
+            
      //
     }
     
@@ -96,6 +111,27 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     // ---------------------
     
     // 2. When person presses button on watch, send a message to the phone
+    func lblCount(){
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+            if self.gameStatus {
+                self.levelOfHunger += 10
+                if(self.levelOfHunger >= 80){
+                    if(self.levelOfHealth > 0 && self.levelOfHealth < 101){
+                    self.levelOfHealth = self.levelOfHealth - 5
+                  }
+                    else if (self.levelOfHealth <= 0){
+                        self.levelOfHealth = 0
+                        self.gameStatus = false
+                        self.nameLabel.setText("Pokemon is dead")
+                    }
+                }
+                self.outputLabel.setText("HP: \(self.levelOfHealth)  Hunger: \(self.levelOfHunger)")
+                self.lblCount()
+            }
+        }
+            
+        
+    }
     @IBAction func buttonPressed() {
         
         if WCSession.default.isReachable {
@@ -132,10 +168,29 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     
     @IBAction func feedButtonPressed() {
         print("Feed button pressed")
+        if(levelOfHealth >= 5 && levelOfHealth < 101){
+            levelOfHunger = levelOfHunger - 12
+            if(levelOfHunger >= 80){
+                levelOfHealth = levelOfHealth - 5
+            }
+            outputLabel.setText("Health: \(levelOfHealth)  Hunger: \(levelOfHunger)")
+        }
+        else{
+            levelOfHunger = 0
+            levelOfHealth = 100
+            outputLabel.setText("Health: \(levelOfHealth)  Hunger: \(levelOfHunger)")
+        }
+        lblCount()
+        
+        
     }
     
     @IBAction func hibernateButtonPressed() {
-        print("Hibernate button pressed")
+        print("HIBERNATE:Btn pressed")
+        gameStatus = false
+        feedup.setEnabled(false)
+        nameLabel.setText("Hibernate mode")
+        
     }
     
 }
